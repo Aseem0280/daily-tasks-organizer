@@ -1,6 +1,5 @@
 import { useState } from "react"
 import { useDraggable } from "@dnd-kit/core"
-import { motion } from "framer-motion"
 
 function Card({ card, listId, lists, setLists }) {
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
@@ -46,52 +45,49 @@ function Card({ card, listId, lists, setLists }) {
   }
 
   return (
-    <motion.div
+    <div
       ref={setNodeRef}
       {...listeners}
       {...attributes}
-      layout
       style={style}
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      whileHover={{ scale: 1.02 }}
-      className="bg-gray-700 p-3 rounded-lg cursor-grab"
+      className="bg-gray-700 p-3 rounded mb-2"
     >
       {edit ? (
         <>
           <input
             value={text}
             onChange={e => setText(e.target.value)}
-            className="w-full bg-gray-600 p-1 rounded"
+            className="w-full bg-gray-600 p-1"
           />
-          <button
-            onClick={updateCard}
-            className="text-green-400 text-sm mt-1"
-          >
-            Save
-          </button>
+          <button onClick={updateCard}>Save</button>
         </>
       ) : (
         <>
-          <p className="text-sm">{card.text}</p>
+          <p>{card.text}</p>
 
           <div className="flex justify-between text-xs mt-2">
-            <button
-              onClick={() => setEdit(true)}
-              className="text-yellow-400"
+            <span
+              className={
+                card.priority === "high"
+                  ? "text-red-400"
+                  : card.priority === "medium"
+                  ? "text-yellow-400"
+                  : "text-green-400"
+              }
             >
-              Edit
-            </button>
-            <button
-              onClick={deleteCard}
-              className="text-red-400"
-            >
-              Delete
-            </button>
+              {card.priority}
+            </span>
+
+            <span>{card.deadline || "No date"}</span>
+          </div>
+
+          <div className="flex justify-between mt-2 text-xs">
+            <button onClick={() => setEdit(true)}>Edit</button>
+            <button onClick={deleteCard}>Delete</button>
           </div>
         </>
       )}
-    </motion.div>
+    </div>
   )
 }
 

@@ -81,38 +81,50 @@ function BoardView() {
     setTitle("")
   }
 
-  if (!board) return <p>Loading...</p>
+  if (!board)
+    return (
+      <div className="text-center mt-10 text-gray-400">
+        Loading board...
+      </div>
+    )
 
   return (
-    <div>
-      <button
-        onClick={() => navigate("/")}
-        className="mb-4 bg-gray-700 px-3 py-1 rounded-lg"
-      >
-        Back
-      </button>
+    <div className="h-full flex flex-col">
 
-      <h2 className="text-2xl mb-4">{board.name}</h2>
+      {/* 🔹 Header */}
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-2xl font-bold">{board.name}</h2>
 
-      <div className="flex gap-2 mb-4">
-        <input
-          value={title}
-          onChange={e => setTitle(e.target.value)}
-          placeholder="New list"
-          className="p-2 bg-gray-800 rounded-lg"
-        />
         <button
-          onClick={addList}
-          className="bg-blue-500 px-4 rounded-lg"
+          onClick={() => navigate("/")}
+          className="bg-gray-700 hover:bg-gray-600 px-4 py-1 rounded-lg transition"
         >
-          Add
+          Back
         </button>
       </div>
 
+      {/* 🔹 Add List */}
+      <div className="flex gap-3 mb-6">
+        <input
+          value={title}
+          onChange={e => setTitle(e.target.value)}
+          placeholder="Add new list..."
+          className="p-2 bg-gray-800 rounded-lg outline-none w-60"
+        />
+
+        <button
+          onClick={addList}
+          className="bg-blue-500 hover:bg-blue-600 px-4 rounded-lg transition"
+        >
+          Add List
+        </button>
+      </div>
+
+      {/* 🔹 Lists Section */}
       <DndContext onDragEnd={handleDragEnd}>
         <motion.div
           layout
-          className="flex gap-4 overflow-x-auto"
+          className="flex gap-6 overflow-x-auto pb-4 flex-1"
         >
           {lists.map(list => (
             <List
